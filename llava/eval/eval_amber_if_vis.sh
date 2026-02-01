@@ -3,10 +3,11 @@
 # AMBER Information Flow Visualization Script
 # This script evaluates AMBER results and generates information flow visualizations
 
+MODELS_ROOT="/data/horse/ws/jixu233b-metadata_ws/models/cca-llava"
 # Set paths
 amber_root=playground/data/amber
 output_root=output/amber
-model_path=ckpts/cca-llava-1.5-7b
+model_path=${MODELS_ROOT}/ckpts/cca-llava-1.5-7b
 
 # Configuration
 question_file=${amber_root}/query/query_all.json
