@@ -40,6 +40,11 @@ def eval_model(args):
     with open(os.path.expanduser(args.question_file)) as file:
         questions = json.load(file)
         questions = get_chunk(questions, args.num_chunks, args.chunk_idx)
+        
+        # Limit to top_k samples if specified
+        if args.top_k is not None and args.top_k > 0:
+            questions = questions[:args.top_k]
+            print(f"Processing only top {args.top_k} samples (out of {len(questions)} after chunking)")
 
     answers_file = os.path.expanduser(args.answers_file)
     os.makedirs(os.path.dirname(answers_file), exist_ok=True)
@@ -99,8 +104,10 @@ if __name__ == "__main__":
     parser.add_argument("--temperature", type=float, default=0.2)
     parser.add_argument("--top_p", type=float, default=None)
     parser.add_argument("--num_beams", type=int, default=1)
-    parser.add_argument("--max_new_tokens", type=int)
+    parser.add_argument("--max_new_tokens", type=int, default=512)
     parser.add_argument("--single-word-answer", action='store_true')
+    parser.add_argument("--top-k", type=int, default=None,
+                       help="Only process top K samples for quick testing. If not specified, process all samples.")
     args = parser.parse_args()
 
     eval_model(args)
